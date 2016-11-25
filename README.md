@@ -1,24 +1,24 @@
 # React Router R
 
-This library provides an extensible DSL for writing React Router routes. 
+This library provides a minimal, extensible DSL for writing React Router routes. 
 
 It exposes a function `R`, which takes:
 
-1. a *path*
+- 1 -  a *path*
 
-2. a *component*
+- 2 -  a *component*
 
-(3...n). optional route *mutators* 
+- (3...n) -  optional route *mutators* 
 
 and returns a valid [plain route](https://github.com/ReactTraining/react-router/blob/master/docs/API.md#plainroute).
 
 ---
 
-React Router R is optimized for readability in Coffeescript, so documentation/examples are in Coffeescript.
+React Router R is designed for optimal readability in Coffeescript, so documentation and examples are in Coffeescript.
+
+---
 
 ## Example:
-
-`routes` is a valid React Router route:
 
 ```coffeescript
 routes = R "/", App,
@@ -30,6 +30,31 @@ routes = R "/", App,
     child R "bar", AboutBar
 ```
 
+*reduces to:*
+
+```javascript
+const routes = {
+  path: "/",
+  component: App,
+  indexRoute: { component: Landing },
+  childRoutes: [
+    { 
+      path: "welcome",
+      component: Landing 
+    },
+    { 
+      path: "about", 
+      component: Landing ,
+      indexRoute: { component: AboutAll },
+      childRoutes: [
+        { path: "foo", component: AboutFoo },
+        { path: "bar", component: AboutBar }
+      ]
+    }
+  ]
+}
+```
+
 See [./example](./example) for the whole application.
 
 ## Installation:
@@ -38,23 +63,20 @@ yarn add react-router-r
 ```
 
 ## Basics:
-### Build a route:
 
-*R*
+### Build a route:
 ```coffeescript
 R '/', App
 ```
 
-evaluates to:
+*reduces to:*
 
-*plain route*
 ```js
 { path: "/", component: App }
 ```
 
-### ...with child routes
+### Build a route with child routes:
 
-*R*
 ```coffeescript
 R '/', App,
   index Landing
@@ -62,35 +84,44 @@ R '/', App,
   child R 'about, About
 ```
 
-evaluates to:
+*reduces to:*
 
-*plain route*
 ```js
 {
   path: "/",
   component: App,
-  indexRoute: {component: Landing},
+  indexRoute: { component: Landing },
   childRoutes: [
-    {path: 'welcome', component: Landing},
-    {path: 'about, component: About}
+    { path: 'welcome', component: Landing },
+    { path: 'about', component: About }
   ]
 }
 ```
 
 ## Mutators:
-Mutators are functions that mutate their input.
+Mutators are just functions that mutate their input. React Router R takes functions that mutate a React Router plain route object.
 
 The following mutators are provided out of the box:
 
-#### `index : Component -> Route -> (Void)`
-Adds an `indexRoute` with the specified Component to the route.
+</br>
 
-#### `child : Route -> Route -> (Void)`
+#### `index : (component : Component) → (route : Route) → undefined`
+
+Adds an [`indexRoute`](https://github.com/ReactTraining/react-router/blob/master/docs/guides/IndexRoutes.md) with the specified component to the route.
+
+</br>
+
+#### `child : (childRoute : Route) → (route : Route) → undefined`
+
 Adds a child route to the route.
 
-## Write your own mutators
+</br>
 
-Writing mutators is easy and is encouraged! For example, let's write one that adds basic support for React Router's [`onEnter`](https://github.com/ReactTraining/react-router/blob/master/docs/API.md#onenternextstate-replace-callback) field:
+## Write your own mutators!
+
+Writing mutators is easy and is encouraged! 
+
+For example, let's write one that adds basic support for React Router's [`onEnter`](https://github.com/ReactTraining/react-router/blob/master/docs/API.md#onenternextstate-replace-callback) field:
 
 ```coffeescript
 onEnter = (onEnterCallback) -> (route) ->
@@ -100,13 +131,16 @@ onEnter = (onEnterCallback) -> (route) ->
 
 Now, we can use it in our routes:
 
-*R*
+---
+
+
 ```coffeescript
 R '/', App, 
   onEnter (nextState, replace, cb) -> ...
 ```
 
-*plain route*:
+*reduces to:*
+
 ```javascript
 {
   path: "/",
@@ -117,3 +151,10 @@ R '/', App,
 }
 ```
 
+---
+
+## List of Mutators:
+Submit a PR to have your mutator listed.
+
+- [index](https://github.com/sleexyz/react-router-r/blob/master/index.js)
+- [child](https://github.com/sleexyz/react-router-r/blob/master/index.js)
