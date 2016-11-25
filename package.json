@@ -1,0 +1,12 @@
+{
+  "name": "react-router-r",
+  "version": "0.0.0",
+  "description": "Extensible DSL for writing React Router routes",
+  "main": "index.js",
+  "repository": {
+    "url": "git@github.com:sleexyz/react-router-r.git",
+    "type": "git"
+  },
+  "author": "Sean Lee <freshdried@gmail.com>",
+  "license": "MIT"
+}
