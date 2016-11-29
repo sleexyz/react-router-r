@@ -1,5 +1,5 @@
 React = {createElement: e, createFactory} = require "react"
-{ Router, browserHistory } = require "react-router"
+{ Router, hashHistory } = require "react-router"
 { render } = require "react-dom"
 {R, index, child} = require "../"
 
@@ -25,6 +25,6 @@ routes = R "/", App,
 
 console.info "routes:", routes
 
-Main = (createFactory Router) {history: browserHistory, routes}
+Main = (createFactory Router) {history: hashHistory, routes}
 
 render Main, document.getElementById "root"

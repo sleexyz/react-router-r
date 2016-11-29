@@ -1,14 +1,14 @@
 # React Router R
 
-This library provides a minimal, extensible DSL for writing React Router routes. 
+This library provides a middleware-inspired DSL for constructing React Router routes. 
 
 It exposes a function `R`, which takes:
 
-- 1 -  a *path*
+- 1 - a *path*
 
-- 2 -  a *component*
+- 2 - a *component*
 
-- (3...n) -  optional route *mutators* 
+- (3...n) - optional route *transformers*, i.e. functions of type `Route → Route`
 
 and returns a valid [plain route](https://github.com/ReactTraining/react-router/blob/master/docs/API.md#plainroute).
 
@@ -98,28 +98,28 @@ R '/', App,
 }
 ```
 
-## Mutators:
-Mutators are just functions that mutate their input. React Router R takes functions that mutate a React Router plain route object.
+## Route Transformers:
+React Router R takes and applies functions that take a React Route (as a plain route object) and returns a React Route. We call these functions *route transformers*.
 
-The following mutators are provided out of the box:
+The following transformers are provided out of the box:
 
 </br>
 
-#### `index : (component : Component) → (route : Route) → undefined`
+#### `index : (component : Component) → (route : Route) → Route`
 
 Adds an [`indexRoute`](https://github.com/ReactTraining/react-router/blob/master/docs/guides/IndexRoutes.md) with the specified component to the route.
 
 </br>
 
-#### `child : (childRoute : Route) → (route : Route) → undefined`
+#### `child : (childRoute : Route) → (route : Route) → Route`
 
 Adds a child route to the route.
 
 </br>
 
-## Write your own mutators!
+## Write your own transfomers!
 
-Writing mutators is easy and is encouraged! 
+Writing route transformers is easy and is encouraged!
 
 For example, let's write one that adds basic support for React Router's [`onEnter`](https://github.com/ReactTraining/react-router/blob/master/docs/API.md#onenternextstate-replace-callback) field:
 
@@ -127,6 +127,7 @@ For example, let's write one that adds basic support for React Router's [`onEnte
 onEnter = (onEnterCallback) -> (route) ->
   if ('onEnter' in route) throw new Error "onEnter is already defined!"
   route.onEnter = onEnterCallback
+  route
 ```
 
 Now, we can use it in our routes:
@@ -153,8 +154,8 @@ R '/', App,
 
 ---
 
-## List of Mutators:
-Submit a PR to have your mutator listed.
+## List of Route Transformers:
+Submit a PR to have your route transformer listed:
 
 - [index](https://github.com/sleexyz/react-router-r/blob/master/index.js)
 - [child](https://github.com/sleexyz/react-router-r/blob/master/index.js)

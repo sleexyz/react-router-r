@@ -8,5 +8,9 @@
     "type": "git"
   },
   "author": "Sean Lee <freshdried@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.18.2",
+    "babel-plugin-transform-flow-strip-types": "^6.18.0"
+  }
 }
