@@ -2,20 +2,20 @@
 
 /*::
 
+type Component = Object
+
+type IndexRoute = {component: Component}
+
 type Route = {
   path: string,
   component: Component,
   childRoutes?: Array<Route>,
-  indexRoute?: {component: Component}
+  indexRoute?: IndexRoute
 }
-
-type Component = any
-
-type Transformer = (route : Route) => Route
 
 */
 
-const R /*: (path : string, component : Component, ...transformers : Array<Transformer>) => Route */
+const R /*: (path : string, component : Component, ...transformers : Array<(route: Route) => Route>) => Route */
 = (path, component, ...transformers) => { let route = {path, component};
   for (let transform of transformers) {
     route = transform(route);
