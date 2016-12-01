@@ -159,3 +159,4 @@ Submit a PR to have your route transformer listed:
 
 - [index](https://github.com/sleexyz/react-router-r/blob/master/index.js)
 - [child](https://github.com/sleexyz/react-router-r/blob/master/index.js)
+- [react-router-dynamic-matcher](https://github.com/sleexyz/react-router-dynamic-matcher)
