@@ -2,10 +2,13 @@
 
 /*::
 
+// from react
 type Component = Object
 
+// from react-router
 type IndexRoute = {component: Component}
 
+// from react-router
 type Route = {
   path: string,
   component: Component,
@@ -15,7 +18,14 @@ type Route = {
 
 */
 
-const R /*: (path : string, component : Component, ...transformers : Array<(route: Route) => Route>) => Route */
+const R /*:
+(
+  path: string, 
+  component: Component, 
+  ...transformers: Array<(route: Route) => Route>
+) 
+  => Route 
+*/
 = (path, component, ...transformers) => { let route = {path, component};
   for (let transform of transformers) {
     route = transform(route);
@@ -24,7 +34,11 @@ const R /*: (path : string, component : Component, ...transformers : Array<(rout
 };
 
 
-const index /*: (component : Component) =>  (r : Route) => Route */
+const index /*:
+(component: Component) 
+  => (r: Route) 
+  => Route 
+*/
 = component => function(r) {
   if ("indexRoute" in r) {
     console.error("indexRoute already exists!", r);
@@ -33,7 +47,11 @@ const index /*: (component : Component) =>  (r : Route) => Route */
   return r;
 };
 
-const child /*: (childRoute : Route) => (r : Route) => Route */
+const child /*:
+(childRoute: Route) 
+  => (r: Route) 
+  => Route 
+*/
 = childRoute => function (r) {
   if (!Array.isArray(r.childRoutes)) {
     r.childRoutes = [];
