@@ -99,7 +99,7 @@ R '/', App,
 ```
 
 ## Route Transformers:
-React Router R takes and applies functions that take a React Route (as a plain route object) and returns a React Route. We call these functions *route transformers*.
+React Router R takes and applies functions that take a React Route (as a plain route object) and returns a React Route. We call these functions *route transformers*. Note these transformers may mutate and return their input.
 
 The following transformers are provided out of the box:
 
