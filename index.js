@@ -6,23 +6,23 @@
 type Component = Object
 
 // from react-router
-type IndexRoute = {component: Component}
+type IndexRoute = {component : Component}
 
 // from react-router
 type Route = {
-  path: string,
-  component: Component,
-  childRoutes?: Array<Route>,
-  indexRoute?: IndexRoute
+  path : string,
+  component : Component,
+  childRoutes? : Array<Route>,
+  indexRoute? : IndexRoute
 }
 
 */
 
 const R /*:
 (
-  path: string, 
-  component: Component, 
-  ...transformers: Array<(route: Route) => Route>
+  path : string, 
+  component : Component, 
+  ...transformers : Array<(route : Route) => Route>
 ) 
   => Route 
 */
@@ -35,8 +35,8 @@ const R /*:
 
 
 const index /*:
-(component: Component) 
-  => (r: Route) 
+(component : Component) 
+  => (r : Route) 
   => Route 
 */
 = component => function(r) {
@@ -48,8 +48,8 @@ const index /*:
 };
 
 const child /*:
-(childRoute: Route) 
-  => (r: Route) 
+(childRoute : Route) 
+  => (r : Route) 
   => Route 
 */
 = childRoute => function (r) {
