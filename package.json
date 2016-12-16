@@ -1,6 +1,6 @@
 {
   "name": "react-router-r",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Extensible DSL for writing React Router routes",
   "main": "index.js",
   "repository": {
@@ -10,7 +10,12 @@
   "author": "Sean Lee <freshdried@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "babel-cli": "^6.18.0",
     "babel-core": "^6.18.2",
-    "babel-plugin-transform-flow-strip-types": "^6.18.0"
+    "babel-plugin-transform-flow-strip-types": "^6.18.0",
+    "babel-preset-es2015": "^6.18.0"
+  },
+  "scripts": {
+    "build": "babel index_src.js > index.js"
   }
 }
