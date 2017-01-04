@@ -20,9 +20,10 @@ const R :
   ...transformers : Array<(route : Route) => Route>
 ) 
   => Route 
-= (path, component, ...transformers) => { let route = {path, component};
-  for (let transform of transformers) {
-    route = transform(route);
+= (path, component, ...transformers) => {
+  let route = {path, component};
+  for (let i = 0; i < transformers.length; i++) {
+    route = transformers[i](route);
   }
   return route;
 };
@@ -36,7 +37,7 @@ const index :
   if ("indexRoute" in r) {
     console.error("indexRoute already exists!", r);
   }
-  Object.assign(r, {indexRoute: {component}});
+  r.indexRoute = component;
   return r;
 };
 

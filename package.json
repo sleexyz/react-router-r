@@ -1,6 +1,6 @@
 {
   "name": "react-router-r",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Extensible DSL for writing React Router routes",
   "main": "index.js",
   "repository": {
