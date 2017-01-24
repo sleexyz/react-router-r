@@ -1,21 +1,22 @@
 {
   "name": "react-router-r",
-  "version": "0.0.3",
-  "description": "Extensible DSL for writing React Router routes",
+  "version": "1.0.0",
+  "description": "React Router Route construction DSL",
   "main": "index.js",
   "repository": {
     "url": "git@github.com:sleexyz/react-router-r.git",
     "type": "git"
   },
+  "scripts": {
+    "build": "coffee --output ./ ./src/index.coffee",
+    "test": "mocha ./src/spec.coffee --require coffee-script/register --compilers coffee:coffee-script"
+  },
   "author": "Sean Lee <freshdried@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "babel-cli": "^6.18.0",
-    "babel-core": "^6.18.2",
-    "babel-plugin-transform-flow-strip-types": "^6.18.0",
-    "babel-preset-es2015": "^6.18.0"
-  },
-  "scripts": {
-    "build": "babel index_src.js > index.js"
+    "chai": "^3.5.0",
+    "coffee-script": "^1.12.3",
+    "mocha": "^3.2.0",
+    "react": "^15.4.2"
   }
 }

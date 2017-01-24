@@ -1,6 +1,6 @@
 # React Router R
 
-This library provides a middleware-inspired DSL for constructing React Router routes. 
+This library provides a declarative DSL for constructing React Router routes.
 
 It exposes a function `R`, which takes:
 
@@ -10,7 +10,7 @@ It exposes a function `R`, which takes:
 
 - (3...n) - optional route *transformers*, i.e. functions of type `Route → Route`
 
-and returns a valid [plain route](https://github.com/ReactTraining/react-router/blob/master/docs/API.md#plainroute).
+and returns a valid Route, aka a React Router [plain route](https://github.com/ReactTraining/react-router/blob/master/docs/API.md#plainroute).
 
 ---
 
@@ -157,6 +157,6 @@ R '/', App,
 ## List of Route Transformers:
 Submit a PR to have your route transformer listed:
 
-- [index](https://github.com/sleexyz/react-router-r/blob/master/index.js)
-- [child](https://github.com/sleexyz/react-router-r/blob/master/index.js)
+- [index](https://github.com/sleexyz/react-router-r/blob/master/src/index.coffee)
+- [child](https://github.com/sleexyz/react-router-r/blob/master/src/index.coffee)
 - [react-router-dynamic-matcher](https://github.com/sleexyz/react-router-dynamic-matcher)
