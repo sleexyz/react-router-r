@@ -1,5 +1,6 @@
 # React Router R
 [![CircleCI](https://circleci.com/gh/sleexyz/react-router-r.svg?style=svg)](https://circleci.com/gh/sleexyz/react-router-r)
+[![npm version](https://badge.fury.io/js/react-router-r.svg)](https://badge.fury.io/js/react-router-r)
 
 This library provides a declarative DSL for constructing React Router routes.
 
