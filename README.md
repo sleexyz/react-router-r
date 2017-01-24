@@ -25,6 +25,8 @@ React Router R is designed for optimal readability in Coffeescript, so documenta
 ```coffeescript
 R = {index, child} = require 'react-router-r'
 
+...
+
 routes = R "/", App,
   index Landing
   child R "welcome", Landing
