@@ -1,4 +1,5 @@
 # React Router R
+![circle-status](https://circleci.com/gh/sleexyz/react-router-r.png?style=shield&circle-token=:circle-token)
 
 This library provides a declarative DSL for constructing React Router routes.
 
