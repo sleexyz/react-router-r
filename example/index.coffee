@@ -20,7 +20,7 @@ routes = R '/', App,
   index Landing
   child R 'welcome', Landing
   child R.dynamic 'about', AboutOuter, (callback) ->
-    callback AboutInner,
+    callback R '', AboutInner,
       index AboutMain
       child R 'foo', AboutFoo
       child R 'bar', AboutBar

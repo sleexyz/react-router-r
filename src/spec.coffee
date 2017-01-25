@@ -50,8 +50,39 @@ describe 'index', ->
     assert.throws makeRouteObj, Error
 
 describe 'dynamic', ->
-  it 'works', ->
-    assert.fail()
+  it 'adds getIndexRoute and getChildRoutes', ->
+    routeObj = R.dynamic '/', Component0, (callback) ->
+      callback R '', Component1,
+        child R 'foo', Component1
+        child R 'bar', Component2
+        child R 'baz', Component3
+      assert.isFunction routeObj.getIndexRoute
+      assert.isFunction routeObj.getChildRoutes
+
+  it 'returns error when indexRoute is not provided', ->
+    routeObj = R.dynamic '/', Component0, (callback) ->
+      callback R '', Component1,
+        child R 'foo', Component1
+    dynamicError = undefined
+    dynamicIndex = undefined
+    routeObj.getIndexRoute null, (err, indexRoute) ->
+      dynamicError = err
+      dynamicIndex = indexRoute
+    assert dynamicError, 'error not provided'
+    assert.isUndefined dynamicIndex
+
+  it 'gracefully returns no dynamic child routes when not provided', ->
+    routeObj = R.dynamic '/', Component0, (callback) ->
+      callback R '', Component1,
+        index Component2
+    dynamicError = undefined
+    dynamicChildRoutes = undefined
+    routeObj.getChildRoutes null, (err, childRoutes) ->
+      dynamicError = err
+      dynamicChildRoutes = childRoutes
+    assert.isUndefined dynamicError
+    assert.isArray dynamicChildRoutes
+    assert.equal dynamicChildRoutes.length, 1
 
 describe '(together)', ->
   it 'works', ->

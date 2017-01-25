@@ -59,21 +59,23 @@
       path: path,
       component: component,
       getIndexRoute: function(_partialNextState, callback) {
-        return getRouteAsync(function() {
-          var component, route, transformers;
-          component = arguments[0], transformers = 2 <= arguments.length ? slice.call(arguments, 1) : [];
-          route = R.apply(null, [path, component].concat(slice.call(transformers)));
-          return callback(null, {
-            component: Contain(route.component, route.indexRoute.component)
-          });
+        return getRouteAsync(function(route) {
+          if (route.indexRoute != null) {
+            return callback(null, {
+              component: Contain(route.component, route.indexRoute.component)
+            });
+          } else {
+            return callback(new Error('No dynamic indexRoute provided'));
+          }
         });
       },
       getChildRoutes: function(_partialNextState, callback) {
-        return getRouteAsync(function() {
-          var component, route, transformers;
-          component = arguments[0], transformers = 2 <= arguments.length ? slice.call(arguments, 1) : [];
-          route = R.apply(null, ['', component].concat(slice.call(transformers)));
-          return callback(null, [route]);
+        return getRouteAsync(function(route) {
+          if (route.indexRoute != null) {
+            return callback(null, [route]);
+          } else {
+            return callback(null, []);
+          }
         });
       }
     };
