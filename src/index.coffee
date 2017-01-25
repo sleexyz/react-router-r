@@ -19,7 +19,6 @@ R.child = (childRoute) -> (route) ->
 
 R.index = (component) -> (route) ->
   ensureNotIn 'indexRoute', route, 'index can only be used once'
-  ensureNotIn 'getIndexRoute', route, 'Unexpected error'
   route.indexRoute = {component}
   route
 
