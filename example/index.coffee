@@ -10,18 +10,20 @@ _makeComponent = (msg) -> ({foo, children}) ->
 
 App = _makeComponent "App"
 Landing = _makeComponent "welcome!"
-About = _makeComponent "about"
+AboutOuter = _makeComponent "About loading..."
+AboutInner = _makeComponent "about loaded!"
 AboutMain = _makeComponent "about main"
 AboutFoo = _makeComponent "about foo"
 AboutBar = _makeComponent "about bar"
 
-routes = R "/", App,
+routes = R '/', App,
   index Landing
-  child R "welcome", Landing
-  child R "about", About,
-    index AboutMain
-    child R "foo", AboutFoo
-    child R "bar", AboutBar
+  child R 'welcome', Landing
+  child R.dynamic 'about', AboutOuter, (callback) ->
+    callback AboutInner,
+      index AboutMain
+      child R 'foo', AboutFoo
+      child R 'bar', AboutBar
 
 console.info "routes:", routes
 

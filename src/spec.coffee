@@ -40,7 +40,7 @@ describe 'index', ->
   it 'works when used once', ->
     routeObj = R '/', Component0,
       index Component1
-    assert.equal routeObj.indexRoute, Component1
+    assert.equal routeObj.indexRoute.component, Component1
 
   it 'throws an error when used more than once', ->
     makeRouteObj = ->
@@ -49,7 +49,7 @@ describe 'index', ->
         index Component2
     assert.throws makeRouteObj, Error
 
-describe 'R', ->
+describe '(together)', ->
   it 'works', ->
     routeObj1 = R '/', Component0,
       index Component1
