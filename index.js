@@ -55,29 +55,33 @@
   };
 
   R.dynamic = function(path, component, getRouteAsync) {
-    return {
-      path: path,
-      component: component,
-      getIndexRoute: function(_partialNextState, callback) {
-        return getRouteAsync(function(route) {
-          if (route.indexRoute != null) {
-            return callback(null, {
-              component: Contain(route.component, route.indexRoute.component)
-            });
-          } else {
-            return callback(new Error('No dynamic indexRoute provided'));
-          }
-        });
-      },
-      getChildRoutes: function(_partialNextState, callback) {
-        return getRouteAsync(function(route) {
-          if (route.indexRoute != null) {
-            return callback(null, [route]);
-          } else {
-            return callback(null, []);
-          }
-        });
-      }
+    return function(route) {
+      var childRoute;
+      childRoute = {
+        path: path,
+        component: component,
+        getIndexRoute: function(_partialNextState, callback) {
+          return getRouteAsync(function(route) {
+            if (route.indexRoute != null) {
+              return callback(void 0, {
+                component: Contain(route.component, route.indexRoute.component)
+              });
+            } else {
+              return callback(new Error('No dynamic indexRoute provided'));
+            }
+          });
+        },
+        getChildRoutes: function(_partialNextState, callback) {
+          return getRouteAsync(function(route) {
+            if (route.indexRoute != null) {
+              return callback(void 0, [route]);
+            } else {
+              return callback(void 0, []);
+            }
+          });
+        }
+      };
+      return R.child(childRoute)(route);
     };
   };
 
