@@ -49,6 +49,10 @@ describe 'index', ->
         index Component2
     assert.throws makeRouteObj, Error
 
+describe 'dynamic', ->
+  it 'works', ->
+    assert.fail()
+
 describe '(together)', ->
   it 'works', ->
     routeObj1 = R '/', Component0,

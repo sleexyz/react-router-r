@@ -22,4 +22,19 @@ R.index = (component) -> (route) ->
   route.indexRoute = {component}
   route
 
+Contain = (parent, child) -> (props) -> createElement parent, {}, createElement child, {}
+
+R.dynamic = (path, component, getRouteAsync) ->
+  path: path
+  component: component
+  getIndexRoute: (_partialNextState, callback) ->
+    getRouteAsync (component, transformers...) ->
+      route = R path, component, transformers...
+      callback null,
+        component: Contain route.component, route.indexRoute.component
+  getChildRoutes: (_partialNextState, callback) ->
+    getRouteAsync (component, transformers...) ->
+      route = R '', component, transformers...
+      callback null, [route]
+
 module.exports = R
