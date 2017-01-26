@@ -23,7 +23,7 @@ React Router R is designed for optimal readability in Coffeescript, so documenta
 ## Example:
 
 ```coffeescript
-R = {index, child} = require 'react-router-r'
+{R, index, child} = require 'react-router-r'
 
 ...
 
@@ -111,21 +111,40 @@ The following transformers are provided out of the box:
 
 </br>
 
-#### `index : (component : Component) → (route : Route) → Route`
+#### `index`
+```
+index : (component : Component) → (route : Route) → Route
+```
 
 Adds an [`indexRoute`](https://github.com/ReactTraining/react-router/blob/master/docs/guides/IndexRoutes.md) with the specified component to the route.
 
 </br>
 
-#### `child : (childRoute : Route) → (route : Route) → Route`
+#### `child`
+```
+child : (childRoute : Route) → (route : Route) → Route
+```
 
 Adds a child route to the route.
 
 </br>
 
+#### `dynamic`
+```
+dynamic : (
+  path : String,
+  component : Component,
+  routeAsync : (∀b. (returnRoute : ((route : Route) → b)) → b)
+) → (route : Route) → Route
+```
+
+Adds a child route with the provided `path` and `component` with a dynamically generated grandchild route. Uses React Router's [`getIndexRoute`](https://github.com/ReactTraining/react-router/blob/master/docs/API.md#getindexroutepartialnextstate-callback) and [`getChildRoutes`](https://github.com/ReactTraining/react-router/blob/master/docs/API.md#getchildroutespartialnextstate-callback) under the hood.
+
+</br>
+
 ## Write your own transfomers!
 
-Writing route transformers is easy and is encouraged!
+Writing route transformers is easy!
 
 For example, let's write one that adds basic support for React Router's [`onEnter`](https://github.com/ReactTraining/react-router/blob/master/docs/API.md#onenternextstate-replace-callback) field:
 
@@ -157,12 +176,3 @@ R '/', App,
   }
 }
 ```
-
----
-
-## List of Route Transformers:
-Submit a PR to have your route transformer listed:
-
-- [index](https://github.com/sleexyz/react-router-r/blob/master/src/index.coffee)
-- [child](https://github.com/sleexyz/react-router-r/blob/master/src/index.coffee)
-- [react-router-dynamic-matcher](https://github.com/sleexyz/react-router-dynamic-matcher)
