@@ -88,7 +88,7 @@ describe 'dynamic', ->
     assert dynamicError, 'error not provided'
     assert.isUndefined dynamicIndex
 
-  it 'gracefully returns no dynamic child routes when not provided', ->
+  it 'always dynamically returns one child route', ->
     routeObj = R '/', Component0,
       child R 'foo', Component1
       dynamic 'bar', Component1, (callback) ->
