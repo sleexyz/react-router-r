@@ -1,4 +1,4 @@
-R = {child, index} = require './'
+{R, child, dynamic, index} = require './'
 {assert} = require 'chai'
 {createElement: e} = require 'react'
 
@@ -6,6 +6,7 @@ Component0 = (props) -> e 'div', props.children
 Component1 = () -> e 'div', {}
 Component2 = () -> e 'div', {}
 Component3 = () -> e 'div', {}
+Component4 = () -> e 'div', {}
 
 describe 'R', ->
   it 'adds path', ->
@@ -48,6 +49,60 @@ describe 'index', ->
         index Component1
         index Component2
     assert.throws makeRouteObj, Error
+
+describe 'dynamic', ->
+  it 'adds a route to childRoutes', ->
+    routeObj = R '/', Component0,
+      child R 'foo', Component1
+      dynamic 'bar', Component1, (callback) ->
+        callback R '', Component2,
+          index Component3
+      child R 'baz', Component1
+    assert.equal routeObj.childRoutes.length, 3
+
+  it 'adds path, component, getIndexRoute and getChildRoutes', ->
+    routeObj = R '/', Component0,
+      child R 'foo', Component1
+      dynamic 'bar', Component1, (callback) ->
+        callback R '', Component2,
+          index Component3
+      child R 'baz', Component1
+    assert.equal routeObj.childRoutes[1].component, Component1
+    assert.equal routeObj.childRoutes[1].path, 'bar'
+    assert.isFunction routeObj.childRoutes[1].getIndexRoute
+    assert.isFunction routeObj.childRoutes[1].getChildRoutes
+
+  it 'returns error when indexRoute is not provided', ->
+    routeObj = R '/', Component0,
+      child R 'foo', Component1
+      dynamic 'bar', Component1, (callback) ->
+        callback R '', Component2,
+          child R 'hello', Component3
+          child R 'world', Component3
+      child R 'baz', Component1
+    dynamicError = undefined
+    dynamicIndex = undefined
+    routeObj.childRoutes[1].getIndexRoute null, (err, indexRoute) ->
+      dynamicError = err
+      dynamicIndex = indexRoute
+    assert dynamicError, 'error not provided'
+    assert.isUndefined dynamicIndex
+
+  it 'always dynamically returns one child route', ->
+    routeObj = R '/', Component0,
+      child R 'foo', Component1
+      dynamic 'bar', Component1, (callback) ->
+        callback R '', Component2,
+          index Component3
+      child R 'baz', Component1
+    dynamicError = undefined
+    dynamicChildRoutes = undefined
+    routeObj.childRoutes[1].getChildRoutes null, (err, childRoutes) ->
+      dynamicError = err
+      dynamicChildRoutes = childRoutes
+    assert.isUndefined dynamicError
+    assert.isArray dynamicChildRoutes
+    assert.equal dynamicChildRoutes.length, 1
 
 describe '(together)', ->
   it 'works', ->

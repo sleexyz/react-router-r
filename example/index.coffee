@@ -1,7 +1,7 @@
 React = {createElement: e, createFactory} = require "react"
-{ Router, hashHistory } = require "react-router"
-{ render } = require "react-dom"
-R = {index, child} = require "../"
+{Router, hashHistory} = require "react-router"
+{render} = require "react-dom"
+{R, child, dynamic, index} = require "../"
 
 _makeComponent = (msg) -> ({foo, children}) ->
   e 'div', {},
@@ -9,21 +9,28 @@ _makeComponent = (msg) -> ({foo, children}) ->
     children
 
 App = _makeComponent "App"
-Landing = _makeComponent "welcome!"
-AboutOuter = _makeComponent "About loading..."
-AboutInner = _makeComponent "about loaded!"
-AboutMain = _makeComponent "about main"
-AboutFoo = _makeComponent "about foo"
-AboutBar = _makeComponent "about bar"
+Landing = _makeComponent "Landing"
+AboutOuter = _makeComponent "AboutOuter"
+AboutInner = _makeComponent "AboutInner"
+AboutMain = _makeComponent "AboutMain"
+AboutFoo = _makeComponent "AboutFoo"
+AboutBar = _makeComponent "AboutBar"
+Foo = _makeComponent "Foo"
+Bar = _makeComponent "Bar"
+Baz = _makeComponent "Baz"
 
 routes = R '/', App,
   index Landing
   child R 'welcome', Landing
-  child R.dynamic 'about', AboutOuter, (callback) ->
-    callback AboutInner,
+  dynamic 'about', AboutOuter, (callback) ->
+    console.info 'async'
+    callback R '', AboutInner,
       index AboutMain
       child R 'foo', AboutFoo
       child R 'bar', AboutBar
+  child R 'foo', Foo
+  child R 'bar', Bar
+  child R 'baz', Baz
 
 console.info "routes:", routes
 
