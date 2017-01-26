@@ -38,10 +38,7 @@ dynamic = (path, component, getRouteAsync) -> (route) ->
           callback new Error 'No dynamic indexRoute provided'
     getChildRoutes: (_partialNextState, callback) ->
       getRouteAsync (route) ->
-        if route.indexRoute?
-          callback undefined, [route]
-        else
-          callback undefined, []
+        callback undefined, [route]
   child(childRoute) route
 
 module.exports = {R, child, dynamic, index}
