@@ -1,4 +1,4 @@
-R = {child, index} = require './'
+{R, child, dynamic, index} = require './'
 {assert} = require 'chai'
 {createElement: e} = require 'react'
 
@@ -53,20 +53,20 @@ describe 'index', ->
 describe 'dynamic', ->
   it 'adds a route to childRoutes', ->
     routeObj = R '/', Component0,
-      R.child R 'foo', Component1
-      R.dynamic 'bar', Component1, (callback) ->
+      child R 'foo', Component1
+      dynamic 'bar', Component1, (callback) ->
         callback R '', Component2,
           index Component3
-      R.child R 'baz', Component1
+      child R 'baz', Component1
     assert.equal routeObj.childRoutes.length, 3
 
   it 'adds path, component, getIndexRoute and getChildRoutes', ->
     routeObj = R '/', Component0,
-      R.child R 'foo', Component1
-      R.dynamic 'bar', Component1, (callback) ->
+      child R 'foo', Component1
+      dynamic 'bar', Component1, (callback) ->
         callback R '', Component2,
           index Component3
-      R.child R 'baz', Component1
+      child R 'baz', Component1
     assert.equal routeObj.childRoutes[1].component, Component1
     assert.equal routeObj.childRoutes[1].path, 'bar'
     assert.isFunction routeObj.childRoutes[1].getIndexRoute
@@ -74,12 +74,12 @@ describe 'dynamic', ->
 
   it 'returns error when indexRoute is not provided', ->
     routeObj = R '/', Component0,
-      R.child R 'foo', Component1
-      R.dynamic 'bar', Component1, (callback) ->
+      child R 'foo', Component1
+      dynamic 'bar', Component1, (callback) ->
         callback R '', Component2,
           child R 'hello', Component3
           child R 'world', Component3
-      R.child R 'baz', Component1
+      child R 'baz', Component1
     dynamicError = undefined
     dynamicIndex = undefined
     routeObj.childRoutes[1].getIndexRoute null, (err, indexRoute) ->
@@ -90,11 +90,11 @@ describe 'dynamic', ->
 
   it 'gracefully returns no dynamic child routes when not provided', ->
     routeObj = R '/', Component0,
-      R.child R 'foo', Component1
-      R.dynamic 'bar', Component1, (callback) ->
+      child R 'foo', Component1
+      dynamic 'bar', Component1, (callback) ->
         callback R '', Component2,
           index Component3
-      R.child R 'baz', Component1
+      child R 'baz', Component1
     dynamicError = undefined
     dynamicChildRoutes = undefined
     routeObj.childRoutes[1].getChildRoutes null, (err, childRoutes) ->

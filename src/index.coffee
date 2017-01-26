@@ -12,20 +12,20 @@ R = (path, component, transformers...) ->
     route = transformer route
   route
 
-R.child = (childRoute) -> (route) ->
+child = (childRoute) -> (route) ->
   route.childRoutes = [] unless Array.isArray route.childRoutes
   route.childRoutes.push childRoute
   route
 
-R.index = (component) -> (route) ->
+index = (component) -> (route) ->
   ensureNotIn 'indexRoute', route, 'index can only be used once'
   route.indexRoute = {component}
   route
 
-Contain = (parent, child) ->
+_Contain = (parent, child) ->
   (props) -> createElement parent, {}, createElement child, {}
 
-R.dynamic = (path, component, getRouteAsync) -> (route) ->
+dynamic = (path, component, getRouteAsync) -> (route) ->
   childRoute =
     path: path
     component: component
@@ -33,7 +33,7 @@ R.dynamic = (path, component, getRouteAsync) -> (route) ->
       getRouteAsync (route) ->
         if route.indexRoute?
           callback undefined,
-            component: Contain route.component, route.indexRoute.component
+            component: _Contain route.component, route.indexRoute.component
         else
           callback new Error 'No dynamic indexRoute provided'
     getChildRoutes: (_partialNextState, callback) ->
@@ -42,6 +42,6 @@ R.dynamic = (path, component, getRouteAsync) -> (route) ->
           callback undefined, [route]
         else
           callback undefined, []
-  R.child(childRoute) route
+  child(childRoute) route
 
-module.exports = R
+module.exports = {R, child, dynamic, index}

@@ -1,7 +1,7 @@
 React = {createElement: e, createFactory} = require "react"
 {Router, hashHistory} = require "react-router"
 {render} = require "react-dom"
-R = {index, child, dynamic} = require "../"
+{R, child, dynamic, index} = require "../"
 
 _makeComponent = (msg) -> ({foo, children}) ->
   e 'div', {},
