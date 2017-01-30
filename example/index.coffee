@@ -28,6 +28,12 @@ routes = R '/', App,
       index AboutMain
       child R 'foo', AboutFoo
       child R 'bar', AboutBar
+  dynamic 'about2', AboutOuter, (callback) ->
+    console.info 'async'
+    callback R '', undefined,
+      index AboutMain
+      child R 'foo', AboutFoo
+      child R 'bar', AboutBar
   child R 'foo', Foo
   child R 'bar', Bar
   child R 'baz', Baz
