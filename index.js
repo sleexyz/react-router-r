@@ -63,9 +63,15 @@
         getIndexRoute: function(_partialNextState, callback) {
           return getRouteAsync(function(route) {
             if (route.indexRoute != null) {
-              return callback(void 0, {
-                component: _Contain(route.component, route.indexRoute.component)
-              });
+              if (route.component != null) {
+                return callback(void 0, {
+                  component: _Contain(route.component, route.indexRoute.component)
+                });
+              } else {
+                return callback(void 0, {
+                  component: route.indexRoute.component
+                });
+              }
             } else {
               return callback(new Error('No dynamic indexRoute provided'));
             }
@@ -73,11 +79,7 @@
         },
         getChildRoutes: function(_partialNextState, callback) {
           return getRouteAsync(function(route) {
-            if (route.indexRoute != null) {
-              return callback(void 0, [route]);
-            } else {
-              return callback(void 0, []);
-            }
+            return callback(void 0, [route]);
           });
         }
       };

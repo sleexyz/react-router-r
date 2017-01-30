@@ -32,8 +32,12 @@ dynamic = (path, component, getRouteAsync) -> (route) ->
     getIndexRoute: (_partialNextState, callback) ->
       getRouteAsync (route) ->
         if route.indexRoute?
-          callback undefined,
-            component: _Contain route.component, route.indexRoute.component
+          if route.component?
+            callback undefined,
+              component: _Contain route.component, route.indexRoute.component
+          else
+            callback undefined,
+              component: route.indexRoute.component
         else
           callback new Error 'No dynamic indexRoute provided'
     getChildRoutes: (_partialNextState, callback) ->
