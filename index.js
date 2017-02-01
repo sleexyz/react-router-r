@@ -54,34 +54,50 @@
     };
   };
 
-  dynamic = function(path, component, getRouteAsync) {
+  dynamic = function(arg) {
+    var component, getRouteAsync, path;
+    path = arg.path, component = arg.component, getRouteAsync = arg.getRouteAsync;
     return function(route) {
       var childRoute;
-      childRoute = {
-        path: path,
-        component: component,
-        getIndexRoute: function(_partialNextState, callback) {
-          return getRouteAsync(function(route) {
-            if (route.indexRoute != null) {
-              if (route.component != null) {
-                return callback(void 0, {
-                  component: _Contain(route.component, route.indexRoute.component)
-                });
-              } else {
-                return callback(void 0, {
-                  component: route.indexRoute.component
-                });
-              }
+      if (getRouteAsync == null) {
+        throw new Error('getRouteAsync not provided');
+      }
+      childRoute = {};
+      if (path != null) {
+        childRoute.path = path;
+      }
+      if (component != null) {
+        childRoute.component = component;
+      }
+      childRoute.getIndexRoute = function(_partialNextState, callback) {
+        return getRouteAsync(function(route) {
+          if (route.indexRoute != null) {
+            if (route.component != null) {
+              return callback(void 0, {
+                component: _Contain(route.component, route.indexRoute.component)
+              });
             } else {
-              return callback(new Error('No dynamic indexRoute provided'));
+              return callback(void 0, {
+                component: route.indexRoute.component
+              });
             }
-          });
-        },
-        getChildRoutes: function(_partialNextState, callback) {
-          return getRouteAsync(function(route) {
-            return callback(void 0, [route]);
-          });
-        }
+          } else {
+            if (route.component != null) {
+              return callback(void 0, {
+                component: route.component
+              });
+            } else {
+              return callback(void 0, {
+                component: null
+              });
+            }
+          }
+        });
+      };
+      childRoute.getChildRoutes = function(_partialNextState, callback) {
+        return getRouteAsync(function(route) {
+          return callback(void 0, [route]);
+        });
       };
       return child(childRoute)(route);
     };
