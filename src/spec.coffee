@@ -130,6 +130,13 @@ describe 'dynamic', ->
     assert.isArray dynamicChildRoutes
     assert.equal dynamicChildRoutes.length, 1
 
+  it 'throws error if getRouteAsync is not provided', ->
+    makeRouteObj = -> R '/', Component0,
+      child R 'foo', Component1
+      dynamic path: 'bar', component: Component1
+      child R 'baz', Component1
+    assert.throws makeRouteObj
+
 describe '(together)', ->
   it 'works', ->
     routeObj1 = R '/', Component0,

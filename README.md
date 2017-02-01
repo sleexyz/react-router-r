@@ -132,13 +132,15 @@ Adds a child route to the route.
 #### `dynamic`
 ```
 dynamic : ({
-  path : String,
-  component : Component,
+  path? : String,
+  component? : Component,
   getRouteAsync : (∀b. (returnRoute : ((route : Route) → b)) → b)
 }) → (route : Route) → Route
 ```
 
-Adds a child route with the provided `path` and `component` with a dynamically generated grandchild route. Uses React Router's [`getIndexRoute`](https://github.com/ReactTraining/react-router/blob/master/docs/API.md#getindexroutepartialnextstate-callback) and [`getChildRoutes`](https://github.com/ReactTraining/react-router/blob/master/docs/API.md#getchildroutespartialnextstate-callback) under the hood.
+Adds a child route with the optionally provided `path` and `component` with a dynamically generated grandchild route. Uses React Router's [`getIndexRoute`](https://github.com/ReactTraining/react-router/blob/master/docs/API.md#getindexroutepartialnextstate-callback) and [`getChildRoutes`](https://github.com/ReactTraining/react-router/blob/master/docs/API.md#getchildroutespartialnextstate-callback) under the hood.
+
+`dynamic` can be used as is, but is more meant to be further abstracted upon for building application-specific dynamic route transformers. It serves as a mid-level API on top of the default low-level React Router dynamic routing API.
 
 </br>
 

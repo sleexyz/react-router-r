@@ -59,6 +59,9 @@
     path = arg.path, component = arg.component, getRouteAsync = arg.getRouteAsync;
     return function(route) {
       var childRoute;
+      if (getRouteAsync == null) {
+        throw new Error('getRouteAsync not provided');
+      }
       childRoute = {};
       if (path != null) {
         childRoute.path = path;

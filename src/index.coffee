@@ -26,11 +26,10 @@ _Contain = (parent, child) ->
   (props) -> createElement parent, {}, createElement child, {}
 
 dynamic = ({path, component, getRouteAsync}) -> (route) ->
+  throw new Error 'getRouteAsync not provided' unless getRouteAsync?
   childRoute = {}
-
   if path? then childRoute.path = path
   if component? then childRoute.component = component
-
   childRoute.getIndexRoute = (_partialNextState, callback) ->
     getRouteAsync (route) ->
       if route.indexRoute?
@@ -47,11 +46,9 @@ dynamic = ({path, component, getRouteAsync}) -> (route) ->
         else
           callback undefined,
             component: null
-
   childRoute.getChildRoutes = (_partialNextState, callback) ->
     getRouteAsync (route) ->
       callback undefined, [route]
-
   child(childRoute) route
 
 module.exports = {R, child, dynamic, index}
