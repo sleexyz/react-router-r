@@ -24,7 +24,7 @@ routes = R '/', App,
   index Landing
   child R 'landing', Landing
 
-  dynamic path: 'about1', component: AsyncOuter, getRouteAsync: (callback) ->
+  dynamic path: 'async1', component: AsyncOuter, getRouteAsync: (callback) ->
     console.info 'async1'
     callback R '', AsyncInner,
       index AsyncMain
@@ -32,14 +32,14 @@ routes = R '/', App,
       child R 'bar', AsyncBar
 
   # No index route
-  dynamic path: 'about2', component: AsyncOuter, getRouteAsync: (callback) ->
+  dynamic path: 'async2', component: AsyncOuter, getRouteAsync: (callback) ->
     console.info 'async2'
     callback R '', AsyncInner,
       child R 'foo', AsyncFoo
       child R 'bar', AsyncBar
 
   # No inner component
-  dynamic path: 'about3', component: AsyncOuter, getRouteAsync: (callback) ->
+  dynamic path: 'async3', component: AsyncOuter, getRouteAsync: (callback) ->
     console.info 'async3'
     callback R '', undefined,
       index AsyncMain
@@ -47,14 +47,14 @@ routes = R '/', App,
       child R 'bar', AsyncBar
 
   # No outer component
-  dynamic path: 'about4', getRouteAsync: (callback) ->
+  dynamic path: 'async4', getRouteAsync: (callback) ->
     console.info 'async4'
     callback R '', AsyncInner,
       child R 'foo', AsyncFoo
       child R 'bar', AsyncBar
 
   # No outer component, no inner component, no index route
-  dynamic path: 'about5', getRouteAsync: (callback) ->
+  dynamic path: 'async5', getRouteAsync: (callback) ->
     console.info 'async5'
     callback R '', undefined,
       child R 'foo', AsyncFoo
