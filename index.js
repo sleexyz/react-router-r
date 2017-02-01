@@ -55,12 +55,12 @@
   };
 
   dynamic = function(arg) {
-    var component, getRouteAsync, path;
-    path = arg.path, component = arg.component, getRouteAsync = arg.getRouteAsync;
+    var component, getRoute, path;
+    path = arg.path, component = arg.component, getRoute = arg.getRoute;
     return function(route) {
       var childRoute;
-      if (getRouteAsync == null) {
-        throw new Error('getRouteAsync not provided');
+      if (getRoute == null) {
+        throw new Error('getRoute not provided');
       }
       childRoute = {};
       if (path != null) {
@@ -70,7 +70,7 @@
         childRoute.component = component;
       }
       childRoute.getIndexRoute = function(_partialNextState, callback) {
-        return getRouteAsync(function(route) {
+        return getRoute(function(route) {
           if (route.indexRoute != null) {
             if (route.component != null) {
               return callback(void 0, {
@@ -95,7 +95,7 @@
         });
       };
       childRoute.getChildRoutes = function(_partialNextState, callback) {
-        return getRouteAsync(function(route) {
+        return getRoute(function(route) {
           return callback(void 0, [route]);
         });
       };

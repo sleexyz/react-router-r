@@ -54,7 +54,7 @@ describe 'dynamic', ->
   it 'adds a route to childRoutes', ->
     routeObj = R '/', Component0,
       child R 'foo', Component1
-      dynamic path: 'bar', component: Component1, getRouteAsync: (callback) ->
+      dynamic path: 'bar', component: Component1, getRoute: (callback) ->
         callback R '', Component2,
           index Component3
       child R 'baz', Component1
@@ -63,7 +63,7 @@ describe 'dynamic', ->
   it 'adds path, component, getIndexRoute and getChildRoutes', ->
     routeObj = R '/', Component0,
       child R 'foo', Component1
-      dynamic path: 'bar', component: Component1, getRouteAsync: (callback) ->
+      dynamic path: 'bar', component: Component1, getRoute: (callback) ->
         callback R '', Component2,
           index Component3
       child R 'baz', Component1
@@ -75,7 +75,7 @@ describe 'dynamic', ->
   it 'omits path and component when they are ommited', ->
     routeObj = R '/', Component0,
       child R 'foo', Component1
-      dynamic getRouteAsync: (callback) ->
+      dynamic getRoute: (callback) ->
         callback R '', Component2,
           index Component3
       child R 'baz', Component1
@@ -85,7 +85,7 @@ describe 'dynamic', ->
   it 'returns dynamic inner component when its indexRoute is not provided', ->
     routeObj = R '/', Component0,
       child R 'foo', Component1
-      dynamic path: 'bar', component: Component1, getRouteAsync: (callback) ->
+      dynamic path: 'bar', component: Component1, getRoute: (callback) ->
         callback R '', Component2,
           child R 'hello', Component3
           child R 'world', Component3
@@ -101,7 +101,7 @@ describe 'dynamic', ->
   it 'returns nothing when neither dynamic inner route nor its indexRoute is provided', ->
     routeObj = R '/', Component0,
       child R 'foo', Component1
-      dynamic path: 'bar', component: Component1, getRouteAsync: (callback) ->
+      dynamic path: 'bar', component: Component1, getRoute: (callback) ->
         callback R '', undefined,
           child R 'hello', Component3
           child R 'world', Component3
@@ -117,7 +117,7 @@ describe 'dynamic', ->
   it 'always dynamically returns one child route', ->
     routeObj = R '/', Component0,
       child R 'foo', Component1
-      dynamic path: 'bar', component: Component1, getRouteAsync: (callback) ->
+      dynamic path: 'bar', component: Component1, getRoute: (callback) ->
         callback R '', Component2,
           index Component3
       child R 'baz', Component1
@@ -130,7 +130,7 @@ describe 'dynamic', ->
     assert.isArray dynamicChildRoutes
     assert.equal dynamicChildRoutes.length, 1
 
-  it 'throws error if getRouteAsync is not provided', ->
+  it 'throws error if getRoute is not provided', ->
     makeRouteObj = -> R '/', Component0,
       child R 'foo', Component1
       dynamic path: 'bar', component: Component1

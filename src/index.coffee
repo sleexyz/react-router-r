@@ -25,13 +25,13 @@ index = (component) -> (route) ->
 _Contain = (parent, child) ->
   (props) -> createElement parent, {}, createElement child, {}
 
-dynamic = ({path, component, getRouteAsync}) -> (route) ->
-  throw new Error 'getRouteAsync not provided' unless getRouteAsync?
+dynamic = ({path, component, getRoute}) -> (route) ->
+  throw new Error 'getRoute not provided' unless getRoute?
   childRoute = {}
   if path? then childRoute.path = path
   if component? then childRoute.component = component
   childRoute.getIndexRoute = (_partialNextState, callback) ->
-    getRouteAsync (route) ->
+    getRoute (route) ->
       if route.indexRoute?
         if route.component?
           callback undefined,
@@ -47,7 +47,7 @@ dynamic = ({path, component, getRouteAsync}) -> (route) ->
           callback undefined,
             component: null
   childRoute.getChildRoutes = (_partialNextState, callback) ->
-    getRouteAsync (route) ->
+    getRoute (route) ->
       callback undefined, [route]
   child(childRoute) route
 

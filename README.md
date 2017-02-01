@@ -134,7 +134,7 @@ Adds a child route to the route.
 dynamic : ({
   path? : String,
   component? : Component,
-  getRouteAsync : (∀b. (returnRoute : ((route : Route) → b)) → b)
+  getRoute : (∀b. (returnRoute : ((route : Route) → b)) → b)
 }) → (route : Route) → Route
 ```
 
