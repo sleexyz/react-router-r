@@ -131,11 +131,11 @@ Adds a child route to the route.
 
 #### `dynamic`
 ```
-dynamic : (
+dynamic : ({
   path : String,
   component : Component,
-  routeAsync : (∀b. (returnRoute : ((route : Route) → b)) → b)
-) → (route : Route) → Route
+  getRouteAsync : (∀b. (returnRoute : ((route : Route) → b)) → b)
+}) → (route : Route) → Route
 ```
 
 Adds a child route with the provided `path` and `component` with a dynamically generated grandchild route. Uses React Router's [`getIndexRoute`](https://github.com/ReactTraining/react-router/blob/master/docs/API.md#getindexroutepartialnextstate-callback) and [`getChildRoutes`](https://github.com/ReactTraining/react-router/blob/master/docs/API.md#getchildroutespartialnextstate-callback) under the hood.

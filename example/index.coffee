@@ -10,33 +10,68 @@ _makeComponent = (msg) -> ({foo, children}) ->
 
 App = _makeComponent "App"
 Landing = _makeComponent "Landing"
-AboutOuter = _makeComponent "AboutOuter"
-AboutInner = _makeComponent "AboutInner"
-AboutMain = _makeComponent "AboutMain"
-AboutFoo = _makeComponent "AboutFoo"
-AboutBar = _makeComponent "AboutBar"
+AsyncOuter = _makeComponent "AsyncOuter"
+AsyncInner = _makeComponent "AsyncInner"
+AsyncMain = _makeComponent "AsyncMain"
+AsyncFoo = _makeComponent "AsyncFoo"
+AsyncBar = _makeComponent "AsyncBar"
+AsyncBaz = _makeComponent "AsyncBaz"
 Foo = _makeComponent "Foo"
 Bar = _makeComponent "Bar"
 Baz = _makeComponent "Baz"
 
 routes = R '/', App,
   index Landing
-  child R 'welcome', Landing
-  dynamic 'about', AboutOuter, (callback) ->
-    console.info 'async'
-    callback R '', AboutInner,
-      index AboutMain
-      child R 'foo', AboutFoo
-      child R 'bar', AboutBar
-  dynamic 'about2', AboutOuter, (callback) ->
-    console.info 'async'
+  child R 'landing', Landing
+
+  dynamic path: 'about1', component: AsyncOuter, getRouteAsync: (callback) ->
+    console.info 'async1'
+    callback R '', AsyncInner,
+      index AsyncMain
+      child R 'foo', AsyncFoo
+      child R 'bar', AsyncBar
+
+  # No index route
+  dynamic path: 'about2', component: AsyncOuter, getRouteAsync: (callback) ->
+    console.info 'async2'
+    callback R '', AsyncInner,
+      child R 'foo', AsyncFoo
+      child R 'bar', AsyncBar
+
+  # No inner component
+  dynamic path: 'about3', component: AsyncOuter, getRouteAsync: (callback) ->
+    console.info 'async3'
     callback R '', undefined,
-      index AboutMain
-      child R 'foo', AboutFoo
-      child R 'bar', AboutBar
+      index AsyncMain
+      child R 'foo', AsyncFoo
+      child R 'bar', AsyncBar
+
+  # No outer component
+  dynamic path: 'about4', getRouteAsync: (callback) ->
+    console.info 'async4'
+    callback R '', AsyncInner,
+      child R 'foo', AsyncFoo
+      child R 'bar', AsyncBar
+
+  # No outer component, no inner component, no index route
+  dynamic path: 'about5', getRouteAsync: (callback) ->
+    console.info 'async5'
+    callback R '', undefined,
+      child R 'foo', AsyncFoo
+      child R 'bar', AsyncBar
+
   child R 'foo', Foo
   child R 'bar', Bar
-  child R 'baz', Baz
+
+  # No outer component, no inner component, no indexRoute, no path
+  dynamic getRouteAsync: (callback) ->
+    console.info 'async6'
+    callback R '', undefined,
+      child R 'foo', AsyncFoo # unreachable
+      child R 'bar', AsyncBar # unreachable
+      child R 'baz', AsyncBaz
+
+  child R 'baz', Baz # unreachable
 
 console.info "routes:", routes
 

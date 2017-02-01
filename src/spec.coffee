@@ -54,7 +54,7 @@ describe 'dynamic', ->
   it 'adds a route to childRoutes', ->
     routeObj = R '/', Component0,
       child R 'foo', Component1
-      dynamic 'bar', Component1, (callback) ->
+      dynamic path: 'bar', component: Component1, getRouteAsync: (callback) ->
         callback R '', Component2,
           index Component3
       child R 'baz', Component1
@@ -63,7 +63,7 @@ describe 'dynamic', ->
   it 'adds path, component, getIndexRoute and getChildRoutes', ->
     routeObj = R '/', Component0,
       child R 'foo', Component1
-      dynamic 'bar', Component1, (callback) ->
+      dynamic path: 'bar', component: Component1, getRouteAsync: (callback) ->
         callback R '', Component2,
           index Component3
       child R 'baz', Component1
@@ -72,10 +72,20 @@ describe 'dynamic', ->
     assert.isFunction routeObj.childRoutes[1].getIndexRoute
     assert.isFunction routeObj.childRoutes[1].getChildRoutes
 
-  it 'returns error when indexRoute is not provided', ->
+  it 'omits path and component when they are ommited', ->
     routeObj = R '/', Component0,
       child R 'foo', Component1
-      dynamic 'bar', Component1, (callback) ->
+      dynamic getRouteAsync: (callback) ->
+        callback R '', Component2,
+          index Component3
+      child R 'baz', Component1
+    assert.isNotOk 'component' of routeObj.childRoutes[1]
+    assert.isNotOk 'path' of routeObj.childRoutes[1]
+
+  it 'returns dynamic inner component when its indexRoute is not provided', ->
+    routeObj = R '/', Component0,
+      child R 'foo', Component1
+      dynamic path: 'bar', component: Component1, getRouteAsync: (callback) ->
         callback R '', Component2,
           child R 'hello', Component3
           child R 'world', Component3
@@ -85,13 +95,29 @@ describe 'dynamic', ->
     routeObj.childRoutes[1].getIndexRoute null, (err, indexRoute) ->
       dynamicError = err
       dynamicIndex = indexRoute
-    assert dynamicError, 'error not provided'
-    assert.isUndefined dynamicIndex
+    assert.isUndefined  dynamicError
+    assert.equal dynamicIndex.component, Component2
+
+  it 'returns nothing when neither dynamic inner route nor its indexRoute is provided', ->
+    routeObj = R '/', Component0,
+      child R 'foo', Component1
+      dynamic path: 'bar', component: Component1, getRouteAsync: (callback) ->
+        callback R '', undefined,
+          child R 'hello', Component3
+          child R 'world', Component3
+      child R 'baz', Component1
+    dynamicError = undefined
+    dynamicIndex = undefined
+    routeObj.childRoutes[1].getIndexRoute null, (err, indexRoute) ->
+      dynamicError = err
+      dynamicIndex = indexRoute
+    assert.isUndefined  dynamicError
+    assert.isNull dynamicIndex.component
 
   it 'always dynamically returns one child route', ->
     routeObj = R '/', Component0,
       child R 'foo', Component1
-      dynamic 'bar', Component1, (callback) ->
+      dynamic path: 'bar', component: Component1, getRouteAsync: (callback) ->
         callback R '', Component2,
           index Component3
       child R 'baz', Component1

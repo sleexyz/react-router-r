@@ -25,24 +25,33 @@ index = (component) -> (route) ->
 _Contain = (parent, child) ->
   (props) -> createElement parent, {}, createElement child, {}
 
-dynamic = (path, component, getRouteAsync) -> (route) ->
-  childRoute =
-    path: path
-    component: component
-    getIndexRoute: (_partialNextState, callback) ->
-      getRouteAsync (route) ->
-        if route.indexRoute?
-          if route.component?
-            callback undefined,
-              component: _Contain route.component, route.indexRoute.component
-          else
-            callback undefined,
-              component: route.indexRoute.component
+dynamic = ({path, component, getRouteAsync}) -> (route) ->
+  childRoute = {}
+
+  if path? then childRoute.path = path
+  if component? then childRoute.component = component
+
+  childRoute.getIndexRoute = (_partialNextState, callback) ->
+    getRouteAsync (route) ->
+      if route.indexRoute?
+        if route.component?
+          callback undefined,
+            component: _Contain route.component, route.indexRoute.component
         else
-          callback new Error 'No dynamic indexRoute provided'
-    getChildRoutes: (_partialNextState, callback) ->
-      getRouteAsync (route) ->
-        callback undefined, [route]
+          callback undefined,
+            component: route.indexRoute.component
+      else
+        if route.component?
+          callback undefined,
+            component: route.component
+        else
+          callback undefined,
+            component: null
+
+  childRoute.getChildRoutes = (_partialNextState, callback) ->
+    getRouteAsync (route) ->
+      callback undefined, [route]
+
   child(childRoute) route
 
 module.exports = {R, child, dynamic, index}
